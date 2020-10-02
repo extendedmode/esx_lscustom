@@ -9,14 +9,14 @@ AddEventHandler('esx_lscustom:buyMod', function(price)
 	local xPlayer = ESX.GetPlayerFromId(_source)
 	price = tonumber(price)
 
-	if Config.IsMechanicJobOnly then
+	if Config.IsMechanicJobOnly and Config.UseSocietyAccount then
 		local societyAccount
 
 		TriggerEvent('esx_addonaccount:getSharedAccount', 'society_mechanic', function(account)
 			societyAccount = account
 		end)
 
-		if price < societyAccount.money then
+		if price <= societyAccount.money then
 			TriggerClientEvent('esx_lscustom:installMod', _source)
 			TriggerClientEvent('esx:showNotification', _source, _U('purchased'))
 			societyAccount.removeMoney(price)
@@ -25,7 +25,7 @@ AddEventHandler('esx_lscustom:buyMod', function(price)
 			TriggerClientEvent('esx:showNotification', _source, _U('not_enough_money'))
 		end
 	else
-		if price < xPlayer.getMoney() then
+		if price <= xPlayer.getMoney() then
 			TriggerClientEvent('esx_lscustom:installMod', _source)
 			TriggerClientEvent('esx:showNotification', _source, _U('purchased'))
 			xPlayer.removeMoney(price)
