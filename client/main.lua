@@ -10,6 +10,12 @@ Citizen.CreateThread(function()
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:playerLoaded')
@@ -37,6 +43,15 @@ RegisterNetEvent('esx_lscustom:cancelInstallMod')
 AddEventHandler('esx_lscustom:cancelInstallMod', function()
 	local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 	ESX.Game.SetVehicleProperties(vehicle, myCar)
+	if not (myCar.modTurbo) then
+	ToggleVehicleMod(vehicle,  18, false)
+	end
+	if not (myCar.modXenon) then
+	ToggleVehicleMod(vehicle,  22, false)
+	end
+	if not (myCar.windowTint) then
+	SetVehicleWindowTint(vehicle, 0)
+	end
 end)
 
 function OpenLSMenu(elems, menuName, menuTitle, parent)
